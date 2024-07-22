@@ -1,4 +1,4 @@
-name: sc-02-PS-resuable-workflow-calling
+name: workflow-calling
 on: 
     push: 
         branches: 

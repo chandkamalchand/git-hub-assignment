@@ -11,7 +11,7 @@ on:
     
 jobs:
     workflow-calling:
-      uses: ./.github/workflows/deploy-java-app.yml 
+      uses: ./.github/workflows/deploy-java-app.yaml 
       #secrets: 
         #AZ_WEB_APP_PUBLISH_PROFILE_PS: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_AS }}
       with:

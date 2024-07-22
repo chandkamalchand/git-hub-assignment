@@ -1,0 +1,15 @@
+name: Build and Deploy Java Application
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    uses: ./.github/workflows/deploy-java-app.yml
+    with:
+      app-name: my-java-app
+      resource-group: my-resource-group
+      java-version: '11'
+      publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}

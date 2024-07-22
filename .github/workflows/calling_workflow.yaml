@@ -12,8 +12,8 @@ on:
 jobs:
     workflow-calling:
       uses: ./.github/workflows/deploy-java-app.yaml 
-      #secrets: 
-        #AZ_WEB_APP_PUBLISH_PROFILE_PS: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_AS }}
+      secrets: 
+        AZ_WEB_APP_PUBLISH_PROFILE: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_CKC }}
       with:
         java_distribution: adopt
         java_version: '17'

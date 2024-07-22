@@ -54,12 +54,12 @@ jobs:
                 java-version: ${{ inputs.java_version }} #'17'
             - name: code build
               run: |
-                cd java-webapp
+                cd java-app
                 mvn clean install
             - run: |
                 echo ${{ github.workspace }} #Path: /home/runner/work/build-deploy-sample/build-deploy-sample
                 ls
-                cd java-webapp/target
+                cd java-app/target
                 echo "Inside target"
                 ls
             - name: upload war file 

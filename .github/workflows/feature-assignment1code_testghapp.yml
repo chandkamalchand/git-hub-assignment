@@ -88,17 +88,51 @@ jobs:
 
     - name: Build with Maven
       run: mvn clean package
-
-    - name: Deploy to Azure Web App
-      uses: azure/webapps-deploy@v3
+      
+    - name: Upload artifact for deployment job
+      uses: actions/upload-artifact@v4
       with:
-        app-name: 'testghapp' # Replace with your Azure Web App name
-        slot-name: 'production'
-        publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
-        package: target/*.war
+        name: java-app
+        path: hello-world-webapp/target/*.war
 
-#         with:
-#           app-name: 'testghapp'
-#           slot-name: 'Production'
-#           package: '*.war'
+   # - name: Deploy to Azure Web App
+    #  uses: azure/webapps-deploy@v3
+     # with:
+      #  app-name: 'testghapp' # Replace with your Azure Web App name
+       # slot-name: 'production'
+        #publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+        #        package: target/*.war
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    environment:
+      name: 'Production'
+      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+    permissions:
+      id-token: write #This is required for requesting the JWT
+  
+    steps:
+      - name: Download artifact from build job
+        uses: actions/download-artifact@v4
+        with:
+          name: java-app
+
+      - name: List downloaded files
+        run: ls -al
+      
+      - name: Login to Azure
+        uses: azure/login@v2
+        with:
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_464E67FE9A46473F9D86468D1463BC40 }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_089C5564DE8D433CAD0A842B0AA73E5B }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_D83BE8E6203F4031BC6213FAB7AB7D53 }}
+
+      - name: Deploy to Azure Web App
+        id: deploy-to-webapp
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: 'testghapp'
+          slot-name: 'Production'
+          package: '*.war'
           

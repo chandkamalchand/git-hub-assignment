@@ -70,7 +70,7 @@ jobs:
               uses: actions/upload-artifact@v4
               with:
                   name: ${{ inputs.upload_artifact_name }} #java-app-war-file
-                  path: '${{ github.workspace }}${{ inputs.upload_artifact_path }}' # ${{ github.workspace }}'/target/*.jar
+                  path: '${{ github.workspace }}${{ inputs.upload_artifact_path }}' # ${{ github.workspace }}'/target/*.war
     deploy:
       needs: build
       runs-on: ubuntu-latest

@@ -18,7 +18,7 @@ jobs:
         java_distribution: adopt
         java_version: '17'
         upload_artifact_name: java-app
-        upload_artifact_path:  '/hello-world-webapp/target/*.jar'
+        upload_artifact_path:  '/hello-world-webapp/target/*.war'
         download_artifact_name: java-app
         webapp_name: java-app
         slot-name: production

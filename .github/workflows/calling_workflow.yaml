@@ -3,7 +3,7 @@ name: Build and Deploy Java Application
 on:
   push:
     branches:
-      - main
+      - feature/assignment1code
 
 jobs:
   deploy:

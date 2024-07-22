@@ -84,5 +84,5 @@ jobs:
           with:
             app-name: ${{ inputs.webapp_name }} #'ga-wa-sc-01'
             publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_C185F53252714845879E112C029AD896}}
-            package: '*.jar'
+            package: '*.war'
             slot-name: ${{ inputs.slot-name }}

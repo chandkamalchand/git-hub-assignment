@@ -11,5 +11,5 @@ jobs:
     with:
       app-name: my-java-app
       resource-group: my-resource-group
-      java-version: '11'
+      java-version: '17'
       publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}

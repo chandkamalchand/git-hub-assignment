@@ -33,7 +33,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: java-app
-          path: hello-world-war-master/target/*.jar
+          path: hello-world-war-master/target/*.war
 
   deploy:
     runs-on: ubuntu-latest

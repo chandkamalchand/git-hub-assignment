@@ -1,53 +1,84 @@
-name: Deploy Java Application
 
-on:
-  workflow_call:
-    inputs:
-      app-name:
-        description: 'Name of the Azure Web App'
-        required: true
-        type: string
-      resource-group:
-        description: 'Azure Resource Group'
-        required: true
-        type: string
-      java-version:
-        description: 'Java version to use'
-        required: true
-        type: string
-      publish-profile:
-        description: 'Azure Web App publish profile'
-        required: true
-        type: string
-
+name: deploy java webapp
+on: 
+    workflow_call: 
+      inputs:
+        java_distribution:
+          description: Java Distribution
+          required: true
+          type: string
+        java_version:
+          description: Java Version
+          required: true
+          type: string
+        upload_artifact_name:
+          description: Name of the artifact to upload.
+          required: true
+          type: string
+        upload_artifact_path:
+          description: Path that describes what to upload.
+          required: true
+          type: string
+        download_artifact_name:
+          description: Name of the artifact to download.
+          required: true
+          type: string
+        webapp_name:
+          description: Name of azure web application.
+          required: true
+          type: string
+        slot-name:
+          description: Name of the slot of azure web application.
+          required: true
+          type: string
+      secrets:
+        AZ_WEB_APP_PUBLISH_PROFILE_PS:
+          required: true
+          description: Webapp Publish Profile
+        
 jobs:
-  build-and-deploy:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-
-      - name: Setup Java
-        uses: actions/setup-java@v2
-        with:
-          java-version: ${{ inputs.java-version }}
-
-      - name: Cache Maven packages
-        uses: actions/cache@v2
-        with:
-          path: ~/.m2/repository
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-          restore-keys: |
-            ${{ runner.os }}-maven-
-
-      - name: Build with Maven
-        run: mvn clean package
-
-      - name: Deploy to Azure Web App
-        uses: azure/webapps-deploy@v2
-        with:
-          app-name: ${{ inputs.app-name }}
-          slot-name: production
-          publish-profile: ${{ inputs.publish-profile }}
-          package: target/*.war
+    build:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Cloning the repo
+              uses: actions/checkout@v3
+            - name: Dependencies Cache 
+              uses: actions/cache@v2
+              with:
+                path: ~/.maven
+                key: ${{ runner.os }}-maven
+            - name: java env setup
+              uses: actions/setup-java@v3
+              with:
+                distribution: ${{ inputs.java_distribution }} #adopt
+                java-version: ${{ inputs.java_version }} #'17'
+            - name: code build
+              run: |
+                cd java-webapp
+                mvn clean install
+            - run: |
+                echo ${{ github.workspace }} #Path: /home/runner/work/build-deploy-sample/build-deploy-sample
+                ls
+                cd java-webapp/target
+                echo "Inside target"
+                ls
+            - name: upload war file 
+              uses: actions/upload-artifact@v4
+              with:
+                  name: ${{ inputs.upload_artifact_name }} #java-app-war-file
+                  path: '${{ github.workspace }}${{ inputs.upload_artifact_path }}' # ${{ github.workspace }}'/target/*.jar
+    deploy:
+      needs: build
+      runs-on: ubuntu-latest
+      steps:
+        - name: Download Artifact from Workflow
+          uses: actions/download-artifact@v4
+          with:
+             name: ${{ inputs.download_artifact_name }} #java-app-war-file
+        - name: Deploy to Azure Web App
+          uses: azure/webapps-deploy@v2
+          with:
+            app-name: ${{ inputs.webapp_name }} #'ga-wa-sc-01'
+            publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_C185F53252714845879E112C029AD896}}
+            package: '*.jar'
+            slot-name: ${{ inputs.slot-name }}

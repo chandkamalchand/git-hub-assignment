@@ -31,10 +31,10 @@ on:
           description: Name of the slot of azure web application.
           required: true
           type: string
-      #secrets:
-        #AZ_WEB_APP_PUBLISH_PROFILE_PS:
-         # required: true
-          #description: Webapp Publish Profile
+      secrets:
+        AZ_WEB_APP_PUBLISH_PROFILE:
+          required: true
+          description: Webapp Publish Profile
         
 jobs:
     build:

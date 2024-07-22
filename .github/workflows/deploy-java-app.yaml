@@ -57,8 +57,8 @@ jobs:
                 java-version: ${{ inputs.java_version }} #'17'
             - name: code build
               run: |
-                ls -la java-app  # Check if the directory exists
-                cd java-app
+                ls -la hello-world-webapp  # Check if the directory exists
+                cd hello-world-webapp
                 mvn clean install
             - run: |
                 echo ${{ github.workspace }} #Path: /home/runner/work/build-deploy-sample/build-deploy-sample

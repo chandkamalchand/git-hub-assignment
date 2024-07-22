@@ -66,5 +66,5 @@ jobs:
         with:
           app-name: 'testghapp'
           slot-name: 'Production'
-          package: '*.jar'
+          package: '*.war'
           

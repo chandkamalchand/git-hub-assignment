@@ -63,7 +63,7 @@ jobs:
             - run: |
                 echo ${{ github.workspace }} #Path: /home/runner/work/build-deploy-sample/build-deploy-sample
                 ls
-                cd java-app/target
+                cd hello-world-webapp/target
                 echo "Inside target"
                 ls
             - name: upload war file 

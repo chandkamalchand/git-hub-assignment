@@ -54,6 +54,7 @@ jobs:
                 java-version: ${{ inputs.java_version }} #'17'
             - name: code build
               run: |
+                ls -la java-app  # Check if the directory exists
                 cd java-app
                 mvn clean install
             - run: |
